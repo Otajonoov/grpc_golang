@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package protofiles;
+option go_package = "protofiles/greetpb";
+
+// Request
+message GreetRequest {
+  string countryCode = 1;
+  string userName = 2;
+}
+
+// Response
+message GreetResponse {
+  string result = 1;
+}
+
+service GreetService {
+  // unary
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
+}
+
+// Run this code ... protoc --go_out=. --go_opt=paths=source_relative greet.proto
