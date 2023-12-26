@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/grpclog"
 	"grpc_golang/unary/server/protofiles/greetpb"
 	"log"
 	"net"
@@ -11,6 +12,22 @@ import (
 
 // this struct could be used to dependency injection
 type servver struct{}
+
+func main() {
+	listener, err := net.Listen("tcp", "localhost:8080")
+	if err != nil {
+		grpclog.Fatalf("failed to listen: %v", err)
+	}
+
+	fmt.Println("starting server")
+
+	s := grpc.NewServer()
+	greetpb.RegisterGreetServiceServer(s, servver{})
+
+	if err := s.Serve(listener); err != nil {
+		panic(err)
+	}
+}
 
 // handler
 func (s servver) Greet(ctx context.Context, req *greetpb.GreetRequest) (*greetpb.GreetResponse, error) {
@@ -32,20 +49,4 @@ func (s servver) Greet(ctx context.Context, req *greetpb.GreetRequest) (*greetpb
 	return &greetpb.GreetResponse{
 		Result: greeting,
 	}, nil
-}
-
-func main() {
-	listener, err := net.Listen("tcp", "localhost:8080")
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("starting server")
-
-	s := grpc.NewServer()
-	greetpb.RegisterGreetServiceServer(s, servver{})
-
-	if err := s.Serve(listener); err != nil {
-		panic(err)
-	}
 }

@@ -3,21 +3,23 @@ package main
 import (
 	"context"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/grpclog"
 	"grpc_golang/unary/server/protofiles/greetpb"
 	"log"
 )
 
 func main() {
-	cc, err := grpc.Dial("localhost:8080", grpc.WithInsecure())
+
+	conn, err := grpc.Dial("127.0.0.1:8080", grpc.WithInsecure())
 	if err != nil {
 		panic(err)
 	}
-	defer cc.Close()
+	defer conn.Close()
 
-	c := greetpb.NewGreetServiceClient(cc)
+	client := greetpb.NewGreetServiceClient(conn)
 
-	getGreeting("Quvonchbek", "uz", c)
-	getGreeting("Quvonchbek", "en", c)
+	getGreeting("Quvonchbek", "uz", client)
+	getGreeting("Quvonchbek", "en", client)
 }
 
 func getGreeting(name, country string, c greetpb.GreetServiceClient) {
@@ -31,7 +33,7 @@ func getGreeting(name, country string, c greetpb.GreetServiceClient) {
 
 	if err != nil {
 		log.Println("error: ", err)
-		panic(err)
+		grpclog.Fatalf("failed to coll to Greet: %v", err)
 	}
 
 	log.Println(res.Result)
