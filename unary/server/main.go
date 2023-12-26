@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
-	"grpc_golang/unary_example/server/protofiles/greetpb"
+	"grpc_golang/unary/server/protofiles/greetpb"
 	"log"
 	"net"
 )
@@ -23,7 +23,7 @@ func (s servver) Greet(ctx context.Context, req *greetpb.GreetRequest) (*greetpb
 	switch req.CountryCode {
 	case "uz":
 		greeting = "Assalomu alaykum " + req.UserName
-	case "en":
+	case "en	":
 		greeting = "Hello " + req.UserName
 	default:
 		greeting = "Assalomu alaykum/Hello " + req.UserName

@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"google.golang.org/grpc"
-	"grpc_golang/unary_example/server/protofiles/greetpb"
+	"grpc_golang/unary/server/protofiles/greetpb"
 	"log"
 )
 

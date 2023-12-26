@@ -1,6 +1,6 @@
-module grpc_golang/unary_example
+module grpc_golang/server_streaming
 
-go 1.21.1
+go 1.21.5
 
 require (
 	google.golang.org/grpc v1.60.1
